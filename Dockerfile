@@ -17,6 +17,8 @@ ENV LANG C.UTF-8
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+COPY inspect.patch /tmp/
+
 RUN set -ex \
 	&& apk add --no-cache --virtual .fetch-deps \
 		gnupg \
@@ -53,10 +55,16 @@ RUN set -ex \
 		util-linux-dev \
 		xz-dev \
 		zlib-dev \
+		patch \
 # add build deps before removing fetch deps in case there's overlap
 	&& apk del --no-network .fetch-deps \
 	\
-	&& cd /usr/src/python \
+	&& cd /usr/src/python/Lib \
+	&& mv /tmp/inspect.patch . \
+	&& patch -p1<./inspect.patch \
+	&& rm inspect.patch \
+	&& cd .. \
+	\
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
 		--build="$gnuArch" \
