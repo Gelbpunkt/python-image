@@ -1,9 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS FROM DOCKERHUB
-#
-# IT IS DIRECTLY EDITED FOR MAXIMUM UPDATES
-#
-
 FROM alpine:latest
 
 # ensure local python is preferred over distribution python
@@ -21,9 +15,6 @@ COPY inspect.patch /tmp/
 
 RUN set -ex \
 	&& apk add --no-cache --virtual .fetch-deps \
-		gnupg \
-		tar \
-		xz \
 		git \
 	\
 	&& mkdir -p /usr/src/python \
@@ -75,7 +66,6 @@ RUN set -ex \
 		--with-system-expat \
 		--with-system-ffi \
 		--without-ensurepip \
-		--with-lto \
 	&& make -j "$(nproc)" \
 # set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
 # https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0
