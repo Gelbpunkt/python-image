@@ -79,7 +79,7 @@ RUN set -ex \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' + \
-	&& sleep 10 && rm -rf /usr/src/python \
+	&& rm -rf /usr/src/python \
 	\
 	&& python3 --version
 
