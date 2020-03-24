@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:edge
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -44,7 +44,6 @@ RUN set -ex \
 		util-linux-dev \
 		xz-dev \
 		zlib-dev \
-		patch \
 # add build deps before removing fetch deps in case there's overlap
 	&& apk del --no-network .fetch-deps \
 	\
