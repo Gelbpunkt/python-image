@@ -11,6 +11,7 @@ ENV LANG C.UTF-8
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+# To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
         git \
@@ -18,6 +19,8 @@ RUN set -ex \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
     && cd /usr/src/python \
+    && git config --global user.email "jens@troet.org" \
+    && git config --global user.name "Jens Reidel" \
     && git pull origin pull/19503/merge --no-edit \
     \
     && apk add --no-cache --virtual .build-deps  \
@@ -41,8 +44,6 @@ RUN set -ex \
         readline-dev \
         sqlite-dev \
         tcl-dev \
-        tk \
-        tk-dev \
         util-linux-dev \
         xz-dev \
         zlib-dev \
