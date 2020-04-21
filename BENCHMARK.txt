@@ -1,0 +1,9 @@
+Benchmarks are done with https://pyperformance.readthedocs.io/usage.html.
+
+Needs clang / gcc installed in the container.
+
+pyperformance run -o compiler.json
+
+Copy, go outside.
+
+pyperf compare_to --table gcc.json clang.json

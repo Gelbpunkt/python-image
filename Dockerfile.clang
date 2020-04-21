@@ -11,6 +11,8 @@ ENV LANG C.UTF-8
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+ENV CC "clang"
+
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
@@ -23,13 +25,20 @@ RUN set -ex \
     && git config --global user.name "Jens Reidel" \
     && git pull origin pull/19503/merge --no-edit \
     \
-    && apk add --no-cache --virtual .build-deps \
+    && apk add --no-cache --virtual .build-deps  \
         bluez-dev \
         bzip2-dev \
         coreutils \
         dpkg-dev dpkg \
         expat-dev \
         findutils \
+        clang \
+        clang-analyzer \
+        clang-dev \
+        clang-extra-tools \
+        clang-libs \
+        llvm10 \
+        compiler-rt-static \
         gcc \
         gdbm-dev \
         libc-dev \
