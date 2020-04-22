@@ -23,7 +23,7 @@ RUN set -ex \
     && git config --global user.name "Jens Reidel" \
     && git pull origin pull/19503/merge --no-edit \
     \
-    && apk add --no-cache --virtual .build-deps \
+    && apk add --no-cache --virtual .build-deps --repository https://ftp.travitia.xyz/alpine --allow-untrusted \
         bluez-dev \
         bzip2-dev \
         coreutils \
