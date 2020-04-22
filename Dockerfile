@@ -14,7 +14,7 @@ RUN apk add --no-cache ca-certificates
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
-        git \
+        git curl \
     \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
@@ -23,7 +23,9 @@ RUN set -ex \
     && git config --global user.name "Jens Reidel" \
     && git pull origin pull/19503/merge --no-edit \
     \
-    && apk add --no-cache --virtual .build-deps --repository https://ftp.travitia.xyz/alpine --allow-untrusted \
+    && curl https://ftp.travitia.xyz/alpine/jens@troet.org-5ea01144.rsa.pub -o /etc/apk/keys/jens@troet.org-5ea01144.rsa.pub \
+    && echo "https://ftp.travitia.xyz/alpine" >> /etc/apk/repositories \
+    && apk add --no-cache --virtual .build-deps \
         bluez-dev \
         bzip2-dev \
         coreutils \
