@@ -2,7 +2,6 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
@@ -10,8 +9,7 @@ on:
   pull_request:
 
 env:
-  # TODO: Change variable to your image's name.
-  IMAGE_NAME: image
+  IMAGE_NAME: python
 
 jobs:
   # Push image to GitHub Packages.
@@ -24,13 +22,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build gcc 9
-        run: docker build . --file Dockerfile --tag python:latest
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:latest
       
       - name: Build gcc 10
-        run: docker build . --file Dockerfile.gcc10 --tag python:gcc10
+        run: docker build . --file Dockerfile.gcc10 --tag $IMAGE_NAME:gcc10
        
       - name: Build clang
-        run: docker build . --file Dockerfile.clang --tag python:clang
+        run: docker build . --file Dockerfile.clang --tag $IMAGE_NAME:clang
 
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.io -u ${{ secrets.DOCKER_USER }} --password-stdin
