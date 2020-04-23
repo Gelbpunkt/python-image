@@ -1,0 +1,49 @@
+name: Docker
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: image
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build gcc 9
+        run: docker build . --file Dockerfile --tag python:latest
+      
+      - name: Build gcc 10
+        run: docker build . --file Dockerfile.gcc10 --tag python:gcc10
+       
+      - name: Build clang
+        run: docker build . --file Dockerfile.clang --tag python:clang
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login docker.io -u ${{ secrets.DOCKER_USER }} --password-stdin
+
+      - name: Push image
+        run: |
+          IMAGE_ID=docker.io/${{ secrets.DOCKER_USER }}/$IMAGE_NAME
+
+          echo IMAGE_ID=$IMAGE_ID
+
+          docker tag python:latest $IMAGE_ID:latest
+          docker tag python:gcc10 $IMAGE_ID:gcc10
+          docker tag python:clang $IMAGE_ID:clang
+          docker push $IMAGE_ID:latest
+          docker push $IMAGE_ID:gcc10
+          docker push $IMAGE_ID:clang
