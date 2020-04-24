@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+  watch:
+    types: [started]
 
   # Run tests for any PRs.
   pull_request:
@@ -16,7 +18,7 @@ jobs:
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.actor == github.event.repository.owner.login
 
     steps:
       - uses: actions/checkout@v2
