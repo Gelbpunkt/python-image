@@ -3,6 +3,9 @@ FROM alpine:edge
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
 
+# Jishaku compatibility
+ENV SHELL /bin/ash
+
 # install ca-certificates so that HTTPS works consistently
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates

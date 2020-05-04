@@ -7,6 +7,9 @@ ENV PATH /usr/local/bin:$PATH
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+# Jishaku compatibility
+ENV SHELL /bin/ash
+
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
