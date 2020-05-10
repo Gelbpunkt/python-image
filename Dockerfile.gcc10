@@ -19,7 +19,7 @@ RUN set -ex \
     && git clone https://github.com/python/cpython.git /usr/src/python \
     && cd /usr/src/python \
     \
-    && curl https://ftp.travitia.xyz/alpine/jens@troet.org-5ea01144.rsa.pub -o /etc/apk/keys/jens@troet.org-5ea01144.rsa.pub \
+    && curl https://ftp.travitia.xyz/alpine/jens.rsa.pub -o /etc/apk/keys/jens.rsa.pub \
     && echo "https://ftp.travitia.xyz/alpine" >> /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
         bluez-dev \
