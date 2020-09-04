@@ -3,23 +3,27 @@ FROM alpine:edge
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
 
-# Jishaku compatibility
-ENV SHELL /bin/ash
-
 # install ca-certificates so that HTTPS works consistently
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
 
+# Jishaku compatibility
+ENV SHELL /bin/ash
+
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
-        git \
+        git curl \
     \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
     && cd /usr/src/python \
-    && git checkout 3.9 \
+    && git config user.name "Jens Reidel" \
+    && git config user.email "adrian@travitia.xyz" \
+    && git pull origin pull/20333/merge --no-edit \
     \
+    && curl https://ftp.travitia.xyz/alpine/jens@troet.org-5ea01144.rsa.pub -o /etc/apk/keys/jens@troet.org-5ea01144.rsa.pub \
+    && echo "https://ftp.travitia.xyz/alpine" >> /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
         bluez-dev \
         bzip2-dev \
@@ -57,6 +61,7 @@ RUN set -ex \
         --with-system-expat \
         --with-system-ffi \
         --without-ensurepip \
+        --with-lto \
     && make -j "$(nproc)" \
 # set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
 # https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0

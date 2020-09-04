@@ -20,6 +20,7 @@ RUN set -ex \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
     && cd /usr/src/python \
+    && git checkout 3.9 \
     \
     && apk add --no-cache --virtual .build-deps  \
         bluez-dev \

@@ -1,6 +1,13 @@
 FROM docker.io/gelbpunkt/python:gcc10
 
 RUN apk add --no-cache --virtual .build gcc git musl-dev libffi-dev openssl-dev && \
-    pip install git+https://github.com/PyCQA/pyflakes git+https://github.com/psf/black git+https://github.com/timothycrosley/isort git+https://gitlab.com/pycqa/flake8 --no-cache-dir && \
+    pip install \
+        git+https://github.com/PyCQA/pyflakes \
+        git+https://github.com/psf/black \
+        git+https://github.com/timothycrosley/isort \
+        git+https://gitlab.com/pycqa/flake8 \
+        git+https://github.com/python/mypy \
+        git+https://github.com/bryanforbes/asyncpg-stubs \
+    --no-cache-dir && \
     apk del .build && \
     apk add --no-cache git
