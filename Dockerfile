@@ -11,7 +11,7 @@ RUN apk add --no-cache ca-certificates
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
-        git curl \
+        git \
     \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
