@@ -1,10 +1,8 @@
 FROM alpine:edge
 
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
-
-# Jishaku compatibility
-ENV SHELL /bin/ash
+ENV PATH /usr/local/bin:$PATH \
+    SHELL /bin/ash
 
 # install ca-certificates so that HTTPS works consistently
 # other runtime dependencies for Python are installed later
@@ -13,7 +11,7 @@ RUN apk add --no-cache ca-certificates
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
     && apk add --no-cache --virtual .fetch-deps \
-        git \
+        git curl \
     \
     && mkdir -p /usr/src/python \
     && git clone https://github.com/python/cpython.git /usr/src/python \
@@ -57,6 +55,7 @@ RUN set -ex \
         --with-system-expat \
         --with-system-ffi \
         --without-ensurepip \
+        --with-lto \
     && make -j "$(nproc)" \
 # set thread stack size to 1MB so we don't segfault before we hit sys.getrecursionlimit()
 # https://github.com/alpinelinux/aports/commit/2026e1259422d4e0cf92391ca2d3844356c649d0

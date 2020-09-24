@@ -1,4 +1,4 @@
-FROM docker.io/gelbpunkt/python:gcc10
+FROM docker.io/gelbpunkt/python:latest
 
 RUN apk add --no-cache --virtual .build gcc git musl-dev libffi-dev openssl-dev && \
     pip install \

@@ -1,14 +1,12 @@
 FROM alpine:edge
 
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH
+ENV PATH /usr/local/bin:$PATH \
+    SHELL /bin/ash
 
 # install ca-certificates so that HTTPS works consistently
 # other runtime dependencies for Python are installed later
 RUN apk add --no-cache ca-certificates
-
-# Jishaku compatibility
-ENV SHELL /bin/ash
 
 # To build with tkinter: Add tk and tk-dev to build-deps
 RUN set -ex \
@@ -22,8 +20,6 @@ RUN set -ex \
     && git config user.email "adrian@travitia.xyz" \
     && git pull origin pull/20333/merge --no-edit \
     \
-    && curl https://ftp.travitia.xyz/alpine/jens@troet.org-5ea01144.rsa.pub -o /etc/apk/keys/jens@troet.org-5ea01144.rsa.pub \
-    && echo "https://ftp.travitia.xyz/alpine" >> /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
         bluez-dev \
         bzip2-dev \
