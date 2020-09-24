@@ -1,8 +1,7 @@
 FROM alpine:edge
 
 # ensure local python is preferred over distribution python
-ENV PATH /usr/local/bin:$PATH \
-    SHELL /bin/ash
+ENV PATH /usr/local/bin:$PATH
 
 # install ca-certificates so that HTTPS works consistently
 # other runtime dependencies for Python are installed later
@@ -106,5 +105,7 @@ RUN set -ex; \
             \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
         \) -exec rm -rf '{}' +; \
     rm -f get-pip.py
+
+ENV SHELL /bin/ash
 
 CMD ["python3"]
